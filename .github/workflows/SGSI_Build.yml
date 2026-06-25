@@ -3,14 +3,15 @@ name: SGSI_Build
 on:
   watch:
     types: [started]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Load Configuration
         uses: falti/dotenv-action@v0.2.5
@@ -44,7 +45,7 @@ jobs:
 
       - name: Cloning SGSI source code
         run: |
-          git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 12 $GITHUB_WORKSPACE/SGSI-build-tool
+          git clone --recurse-submodules https://github.com/harshit2k4/SGSI-build-tool.git -b 12 $GITHUB_WORKSPACE/SGSI-build-tool
 
       - name: Setup sGSI tools requirements
         run: |
@@ -72,7 +73,7 @@ jobs:
           ls "upload"
 
       - name: Upload SGSI to GH-Release
-        uses: ncipollo/release-action@v1.8.6
+        uses: ncipollo/release-action@v1.14.0
         with:
           artifacts: ${{ github.workspace }}/SGSI-build-tool/upload/*
           name: "${{ steps.config.outputs.os_type }}${{ steps.config.outputs.build_type }}-Android${{ steps.config.outputs.version }}-unpack"
